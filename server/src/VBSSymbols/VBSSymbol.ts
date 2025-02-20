@@ -5,6 +5,7 @@ export class VBSSymbol {
 	public name: string = "";
 	public type: string = "";
 	public args: string = "";
+	public returnType: string = "";
 	public symbolRange: ls.Range = null;
 	public nameLocation: ls.Location = null;
 	
