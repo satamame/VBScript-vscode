@@ -3,7 +3,7 @@ import { VBSSymbol } from "./VBSSymbol";
 
 export class VBSMethodSymbol extends VBSSymbol {
 	public GetLsName(): string {
-		return this.name + " (" + this.args + ")";
+		return this.name + " (" + this.args + ")" + this.returnType;
 	}
 	
 	public GetLsSymbolKind(): ls.SymbolKind {
@@ -12,9 +12,9 @@ export class VBSMethodSymbol extends VBSSymbol {
 
 	public GetLsCompletionItem(): ls.CompletionItem {
 		let item = ls.CompletionItem.create(this.name);
-		item.documentation = this.visibility + " " + this.type + " " + this.name + "(" + this.args + ")"
+		item.documentation = this.visibility + " " + this.type + " " + this.name + "(" + this.args + ")" + this.returnType;
 		item.filterText = this.name;
-		item.insertText = this.name + "(" + this.args + ")";
+		item.insertText = this.name + "(" + this.args + ")" + this.returnType;
 		item.kind = ls.CompletionItemKind.Method;
 		return item;
 	}

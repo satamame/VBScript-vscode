@@ -403,6 +403,7 @@ class OpenMethod {
 	name: string;
 	argsIndex: number;
 	args: string;
+	returnType: string;
 	startPosition: ls.Position;
 	nameLocation: ls.Location;
 	statement: MultiLineStatement;
@@ -413,7 +414,7 @@ let openMethod: OpenMethod = null;
 function GetMethodStart(statement: MultiLineStatement, uri: string): boolean {
 	let line = statement.GetFullStatement();
 
-	let rex:RegExp = /^[ \t]*(public[ \t]+|private[ \t]+)?(function|sub)([ \t]+)([a-zA-Z0-9\-\_]+)([ \t]*)(\(([a-zA-Z0-9\_\-, \t(\(\))]*)\))?[ \t]*$/gi;
+	let rex:RegExp = /^[ \t]*(public[ \t]+|private[ \t]+)?(function|sub)([ \t]+)([a-zA-Z0-9\-\_]+)([ \t]*)(\(([a-zA-Z0-9\_\-, \t(\(\))]*)\))?([ \t]+As[ \t]+[a-zA-Z0-9_]+)?[ \t]*$/gi;
 	let regexResult = rex.exec(line);
 
 	if(regexResult == null || regexResult.length < 6)
@@ -435,6 +436,7 @@ function GetMethodStart(statement: MultiLineStatement, uri: string): boolean {
 			name: regexResult[4],
 			argsIndex: preLength + 1, // opening bracket
 			args: regexResult[7],
+			returnType: regexResult[8] || "",
 			startPosition: statement.GetPostitionByCharacter(leadingSpaces),
 			nameLocation: ls.Location.create(uri, ls.Range.create(
 				statement.GetPostitionByCharacter(line.indexOf(regexResult[3])),
@@ -486,6 +488,7 @@ function GetMethodSymbol(statement: MultiLineStatement, uri: string) : VBSSymbol
 	symbol.type = openMethod.type;
 	symbol.name = openMethod.name;
 	symbol.args = openMethod.args;
+	symbol.returnType = openMethod.returnType;
 	symbol.nameLocation = openMethod.nameLocation;
 	symbol.parentName = openClassName;
 	symbol.symbolRange = range;
