@@ -34,3 +34,32 @@ I would appreciate if the regular expressions of mine will be superseded someday
 
 
 [GitHub](https://github.com/Luncher91/VBScript-vscode)
+
+## Fork
+
+[GitHub](https://github.com/satamame/VBScript-vscode)
+
+### v1.1.1
+
+Support Method symbols with return type (e.g. "Function myFunc() As Integer").
+
+### Notes
+
+How to build.
+
+```
+server> npm ci
+server> npm run compile
+server> vsce package
+server> cd ../client
+client> npm ci
+client> npm run compile
+client> .\buildVSIX.bat
+```
+
+How to install.
+
+1. Open Extensions panel.
+1. Select "Install from VSIX..." from dots menu.
+1. Select "client\vbscript-language-server-client-1.1.1.vsix".
+1. Restart VSCode if needed.
