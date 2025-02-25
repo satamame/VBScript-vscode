@@ -92,7 +92,7 @@ function GetVBSSymbolTree(symbols: VBSSymbol[]) {
 	// sort by start positition
 	let sortedSymbols: VBSSymbol[] = symbols.sort(function(a: VBSSymbol, b: VBSSymbol){
 		let diff = a.symbolRange.start.line - b.symbolRange.start.line;
-		
+
 		if(diff != 0)
 			return diff;
 
@@ -100,7 +100,7 @@ function GetVBSSymbolTree(symbols: VBSSymbol[]) {
 	});
 
 	let root = new VBSSymbolTree();
-	
+
 	for (var i = 0; i < sortedSymbols.length; i++) {
 		var symbol = sortedSymbols[i];
 		root.InsertIntoTree(symbol);
@@ -148,7 +148,7 @@ class VBSSymbolTree {
 	public FindDirectParent(position: ls.Position): VBSSymbolTree {
 		if(this.data != null && !PositionInRange(this.data.symbolRange, position))
 			return null;
-		
+
 		for (var i = 0; i < this.children.length; i++) {
 			let symbolTree = this.children[i];
 			let found = symbolTree.FindDirectParent(position);
@@ -166,7 +166,7 @@ class VBSSymbolTree {
 			symbols = this.parent.GetAllParentsAndTheirDirectChildren();
 		else
 			symbols = [];
-		
+
 		let childSymbols = this.children.map(function(symbolTree) {
 			return symbolTree.data;
 		});
@@ -184,7 +184,7 @@ function PositionInRange(range: ls.Range, position: ls.Position): boolean {
 
 	if(range.start.line == position.line && range.start.character >= position.character)
 		return false;
-		
+
 	if(range.end.line == position.line && range.end.character <= position.character)
 		return false;
 
@@ -212,7 +212,7 @@ function CollectSymbols(document: ls.TextDocument): VBSSymbol[] {
 
 	for (var i = 0; i < lines.length; i++) {
 		let line = lines[i];
-		
+
 		let containsComment = line.indexOf("'");
 		if(containsComment > -1)
 			line = line.substring(0, containsComment);
@@ -255,7 +255,7 @@ class MultiLineStatement {
 
 		for (let i = 0; i < this.lines.length; i++) {
 			let line = this.lines[i];
-			
+
 			if(internalIndex <= line.length) {
 				if(i == 0)
 					return ls.Position.create(this.startLine + i, internalIndex + this.startCharacter);
@@ -284,7 +284,7 @@ function SplitStatements(lines: string[], startLineIndex: number): MultiLineStat
 		var line = lines[i];
 		charOffset = 0;
 		let sts: string[] = line.split(":");
-		
+
 		if(sts.length == 1) {
 			statement.lines.push(sts[0]);
 			if(statement.startLine == -1) {
@@ -293,21 +293,21 @@ function SplitStatements(lines: string[], startLineIndex: number): MultiLineStat
 		} else {
 			for (var j = 0; j < sts.length; j++) {
 				var st = sts[j];
-				
+
 				if(statement.startLine == -1)
 					statement.startLine = startLineIndex + i;
-				
+
 				statement.lines.push(st);
-				
+
 				if(j == sts.length-1) {
 					break;
 				}
-				
+
 				statement.startCharacter = charOffset;
 				statements.push(statement);
 				statement = new MultiLineStatement();
 
-				charOffset += st.length 
+				charOffset += st.length
 					+ 1; // ":"
 			}
 		}
@@ -444,7 +444,7 @@ function GetMethodStart(statement: MultiLineStatement, uri: string): boolean {
 			),
 			statement: statement
 		};
-		
+
 		if(openMethod.args == null)
 			openMethod.args = "";
 
@@ -482,7 +482,7 @@ function GetMethodSymbol(statement: MultiLineStatement, uri: string) : VBSSymbol
 	}
 
 	let range: ls.Range = ls.Range.create(openMethod.startPosition, statement.GetPostitionByCharacter(GetNumberOfFrontSpaces(line) + regexResult[0].trim().length))
-	
+
 	let symbol: VBSMethodSymbol = new VBSMethodSymbol();
 	symbol.visibility = openMethod.visibility;
 	symbol.type = openMethod.type;
@@ -515,7 +515,7 @@ function GetParameterSymbols(args: string, argsIndex: number, statement: MultiLi
 
 	for (let i = 0; i < argsSplitted.length; i++) {
 		let arg = argsSplitted[i];
-		
+
 		let splittedByValByRefName = ReplaceAll(ReplaceAll(arg, "\t", " "), "  ", " ").trim().split(" ");
 
 		let varSymbol:VBSVariableSymbol = new VBSVariableSymbol();
@@ -584,7 +584,7 @@ function GetPropertyStart(statement: MultiLineStatement, uri: string) : boolean 
 
 	let leadingSpaces = GetNumberOfFrontSpaces(line);
 	let preLength = leadingSpaces + regexResult.index;
-	
+
 	for (var i = 1; i < 7; i++) {
 		var resElement = regexResult[i];
 		if(resElement != null)
@@ -636,10 +636,10 @@ function GetPropertySymbol(statement: MultiLineStatement, uri: string) : VBSSymb
 
 	// range of the whole definition
 	let range: ls.Range = ls.Range.create(
-		openProperty.startPosition, 
+		openProperty.startPosition,
 		statement.GetPostitionByCharacter(GetNumberOfFrontSpaces(line) + regexResult[0].trim().length)
 	);
-	
+
 	let symbol = new VBSPropertySymbol();
 	symbol.visibility = "";
 	symbol.type = openProperty.type;
@@ -672,17 +672,17 @@ function GetMemberSymbol(statement: MultiLineStatement, uri: string) : VBSMember
 	let nameStartIndex = line.indexOf(line);
 
 	let range: ls.Range = ls.Range.create(
-		statement.GetPostitionByCharacter(intendention), 
+		statement.GetPostitionByCharacter(intendention),
 		statement.GetPostitionByCharacter(intendention + regexResult[0].trim().length)
 	);
-	
+
 	let symbol: VBSMemberSymbol = new VBSMemberSymbol();
 	symbol.visibility = visibility;
 	symbol.type = "";
 	symbol.name = name;
 	symbol.args = "";
 	symbol.symbolRange = range;
-	symbol.nameLocation = ls.Location.create(uri, 
+	symbol.nameLocation = ls.Location.create(uri,
 		ls.Range.create(
 			statement.GetPostitionByCharacter(nameStartIndex),
 			statement.GetPostitionByCharacter(nameStartIndex + name.length)
@@ -731,18 +731,18 @@ function GetVariableSymbol(statement: MultiLineStatement, uri: string) : VBSVari
 		symbol.type = "";
 		symbol.name = varName;
 		symbol.args = "";
-		symbol.nameLocation = ls.Location.create(uri, 
+		symbol.nameLocation = ls.Location.create(uri,
 			GetNameRange(statement, varName )
 		);
-		
+
 		symbol.symbolRange = ls.Range.create(
-			ls.Position.create(symbol.nameLocation.range.start.line, symbol.nameLocation.range.start.character - firstElementOffset), 
+			ls.Position.create(symbol.nameLocation.range.start.line, symbol.nameLocation.range.start.character - firstElementOffset),
 			ls.Position.create(symbol.nameLocation.range.end.line, symbol.nameLocation.range.end.character)
 		);
-		
+
 		firstElementOffset = 0;
 		symbol.parentName = parentName;
-		
+
 		variableSymbols.push(symbol);
 	}
 
@@ -784,12 +784,12 @@ function GetConstantSymbol(statement: MultiLineStatement, uri: string) : VBSCons
 	let nameStartIndex = line.indexOf(line);
 
 	let range: ls.Range = ls.Range.create(
-		statement.GetPostitionByCharacter(intendention), 
+		statement.GetPostitionByCharacter(intendention),
 		statement.GetPostitionByCharacter(intendention + regexResult[0].trim().length)
 	);
-	
+
 	let parentName: string = "";
-	
+
 	if(openClassName != null)
 		parentName = openClassName;
 
@@ -805,7 +805,7 @@ function GetConstantSymbol(statement: MultiLineStatement, uri: string) : VBSCons
 	symbol.name = name;
 	symbol.args = "";
 	symbol.symbolRange = range;
-	symbol.nameLocation = ls.Location.create(uri, 
+	symbol.nameLocation = ls.Location.create(uri,
 		ls.Range.create(
 			statement.GetPostitionByCharacter(nameStartIndex),
 			statement.GetPostitionByCharacter(nameStartIndex + name.length)
@@ -839,7 +839,7 @@ function GetClassSymbol(statement: MultiLineStatement, uri: string) : VBSClassSy
 
 	if(openClassName == null)
 		return null;
-	
+
 	let regexResult = classEndRegex.exec(line);
 
 	if(regexResult == null || regexResult.length < 1)
@@ -858,8 +858,8 @@ function GetClassSymbol(statement: MultiLineStatement, uri: string) : VBSClassSy
 	let range: ls.Range = ls.Range.create(openClassStart, statement.GetPostitionByCharacter(regexResult[0].length))
 	let symbol: VBSClassSymbol = new VBSClassSymbol();
 	symbol.name = openClassName;
-	symbol.nameLocation = ls.Location.create(uri, 
-		ls.Range.create(openClassStart, 
+	symbol.nameLocation = ls.Location.create(uri,
+		ls.Range.create(openClassStart,
 			ls.Position.create(openClassStart.line, openClassStart.character + openClassName.length)
 		)
 	);
