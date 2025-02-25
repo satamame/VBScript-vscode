@@ -414,7 +414,10 @@ let openMethod: OpenMethod = null;
 function GetMethodStart(statement: MultiLineStatement, uri: string): boolean {
 	let line = statement.GetFullStatement();
 
-	let rex:RegExp = /^[ \t]*(public[ \t]+|private[ \t]+)?(function|sub)([ \t]+)([a-zA-Z0-9\-\_]+)([ \t]*)(\(([a-zA-Z0-9\_\-, \t(\(\))]*)\))?([ \t]+As[ \t]+[a-zA-Z0-9_]+)?[ \t]*$/gi;
+	let rex = new RegExp(
+    '^[ \\t]*(public[ \\t]+|private[ \\t]+)?(function|sub)([ \\t]+)([a-zA-Z0-9_ぁ-んァ-ン一-龯々〆〤ー]+)' +
+    '([ \\t]*)(\\(([a-zA-Z0-9\\_\\-, \\t(\\(\\))]*)\\))?([ \\t]+As[ \\t]+[a-zA-Z0-9_]+)?[ \\t]*$', 'gi'
+  );
 	let regexResult = rex.exec(line);
 
 	if(regexResult == null || regexResult.length < 6)

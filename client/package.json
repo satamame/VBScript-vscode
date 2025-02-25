@@ -1,19 +1,19 @@
 {
-  "name": "vbscript-language-server-client",
-  "displayName": "VBScript symbols",
+  "name": "vbscript-language-server-client-j",
+  "displayName": "VBScript symbols j",
   "description": "VBScript symbol support",
-  "author": "Andreas Lenzen",
+  "author": "satamame",
   "license": "MIT",
-  "version": "1.1.1",
-  "publisher": "andreaslenzen",
+  "publisher": "satamame",
+  "version": "1.2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Luncher91/VBScript-vscode"
+    "url": "https://github.com/satamame/VBScript-vscode"
   },
   "bugs": {
-    "url": "https://github.com/Luncher91/VBScript-vscode/issues"
+    "url": "https://github.com/satamame/VBScript-vscode/issues"
   },
-  "homepage": "https://github.com/Luncher91/VBScript-vscode/blob/master/README.md",
+  "homepage": "https://github.com/satamame/VBScript-vscode/blob/master/README.md",
   "galleryBanner": {
     "color": "#888888",
     "theme": "dark"

@@ -1,8 +1,8 @@
 {
-  "name": "vbscript-language-server",
+  "name": "vbscript-language-server-j",
   "description": "Implementation of a VBScript language server in node.",
-  "version": "1.0.3",
-  "author": "Andreas Lenzen",
+  "version": "1.2.0",
+  "author": "satamame",
   "license": "MIT",
   "engines": {
 		"vscode": "^1.43.0"

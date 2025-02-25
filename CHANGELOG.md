@@ -1,31 +1,41 @@
 # CHANGELOG
 
-# Version 1.0.2
+## 1.2.0
+
+Support Japanese function names.
+
+## 1.1.1
+
+Support Method symbols with return type (e.g. "Function myFunc() As Integer").
+
+# Original CHANGELOG
+
+## Version 1.0.2
 
 - corrected error message for (end property expected)
 - added filename to 'refreshed symbols' log message
 - added start character to error messages
 - added support for array arguments
 
-# Version 1.0.1
+## Version 1.0.1
 
 - fixed issue: Default property #10
 
-# Version 1.0.0
+## Version 1.0.0
 
 - performance tweaks
 - method end were not recognized if they were written in a different case (Sub vs. sub)
 
-# Version 0.0.7
+## Version 0.0.7
 
 - fixed issue: Parameters as symbols
 - added language contribution
 - fixed issue: Underline seperation
 
-# Version 0.0.6
+## Version 0.0.6
 
 - fixed issue: Multi-Dim support
 
-# Version 0.0.5
+## Version 0.0.5
 
 - support for code completion of symbols based on scope
